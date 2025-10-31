@@ -1,0 +1,67 @@
+AI Agent Architecture Document
+Components
+Planner Agent
+Decomposes the user’s request (e.g., “summarize notes for this subject”) into actionable subtasks for other agents. Ensures complex academic workflows are clearly structured.​
+
+Retriever Agent (RAG)
+Uses a retrieval-augmented generation pipeline by embedding and indexing note documents (with ChromaDB or FAISS) and fetches relevant content for summarization based on user queries or subtask instructions.​
+
+Summarizer Agent
+Runs a large language model (LLM) fine-tuned via LoRA for targeted academic summarization and flashcard generation. Operates on retrieved content, producing concise study materials directly aligned to student needs.​
+
+Evaluator Agent
+Assesses output quality through automated metrics (ROUGE, factual accuracy) and user feedback. Flags summaries for revision if coverage or helpfulness is lacking.​
+
+MCP (Model Context Protocol) Client
+Optional module to connect agents with external validated tools or models for fact-checking, data augmentation, or workflow expansion.​
+
+Web/UI Layer
+Allows users to upload content, specify revision needs, interact in chat, and receive/download summarized notes or flashcards.
+
+Interaction Flow
+User uploads notes/files and submits a summarization goal via web UI.
+
+Planner Agent interprets the request, generates a structured workflow (e.g., segment the document, define criteria for flashcards).
+
+Retriever Agent embeds documents and queries the vector database for the most relevant sections according to planner’s subtask.
+
+Summarizer Agent applies the fine-tuned LLM (LoRA adapter on Flan-T5) to produce academic summaries, fact lists, or flashcards.
+
+Evaluator Agent automatically scores the summaries and presents results, optionally requesting revision if metrics are subpar.
+
+User receives outputs and rates clarity, coverage, and helpfulness.
+
+(Optional) MCP integration helps agents access trusted external tools for augmentation or external knowledge fetching.
+
+Models Used
+Base model:
+Flan-T5-base (strong zero-shot and instruction-following performance for summarization).​
+
+LoRA fine-tuned adapter:
+Trained for note summarization and flashcard generation, enabling fast, memory-efficient deployment and modular task specialization.​
+
+Retriever embeddings:
+OpenAI or HuggingFace transformer-based text embeddings.
+
+Evaluation:
+Standard NLP metric toolkits (rouge_score, custom factuality checks).
+
+CrewAI or similar agentic orchestration frameworks.
+
+Reasons for Choices
+LoRA fine-tuning allows fast adaptation of the LLM to domain-specific academic outputs without full model retraining or heavy hardware.​
+
+Multi-agent design supports modularity, transparency, and future expandability—each agent can be improved or swapped independently as use cases change.​
+
+RAG (Retrieval-Augmented Generation) ensures the LLM always works with the most relevant user data, preventing hallucinations and boosting factual alignment for study materials.​
+
+Evaluation agent and metrics ensure reliability and allow for continuous improvement based on both quantitative and qualitative feedback channels.
+
+
+References
+
+CrewAI, LangChain, PEFT documentation.​
+
+Open-source project demos and research (GitHub, ProjectPro).​
+
+User feedback and logs included as supplementary material in project files.
