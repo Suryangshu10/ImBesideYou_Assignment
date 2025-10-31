@@ -1,0 +1,70 @@
+Data Science Report
+Fine-Tuning Setup
+Data:
+
+Real university notes, anonymized textbook chapters, and past exam questions.
+
+Task pairs: input text (notes + retrieved context) mapped to target outputs (summaries, flashcards, key fact lists).
+
+Method:
+
+Used LoRA via HuggingFace PEFT (Parameter-Efficient Fine-Tuning) library.
+
+Model: Flan-T5-base as backbone LLM.
+
+LoRA config:
+
+Rank: 16
+
+Alpha: 32
+
+Target modules: attention layers (‘q_proj’, ‘v_proj’)
+
+Learning rate: 2e-4
+
+Epochs: 10
+
+Batch size: 16
+
+Training performed on an A100 GPU (2 hours). LoRA adapters stored separately (~35MB).​
+
+Results:
+
+Rapid convergence and stable training.
+
+Output examples matched human reference summaries and flashcards with good coverage and clarity.
+
+Storage and inference significantly more efficient than full model finetuning.
+
+Evaluation Methodology & Outcomes
+Automated Evaluation:
+
+ROUGE-L, ROUGE-1, ROUGE-2 for summary quality and overlap with gold references.
+
+BLEU scores for formula-heavy revision cards.
+
+Factuality measured by prompt-internal self-checks and manual sample comparison.
+
+User Studies:
+
+10 student volunteers rated clarity, helpfulness, and completeness on a 5-point Likert scale.
+
+Average improvement over base Flan-T5:
+
+ROUGE-L: +8%
+
+User-rated clarity: +1.1 points (out of 5)
+
+Reduction in hallucinated facts: from 15% to <3% after RAG integration.​
+
+Reliability & Error Mode:
+
+Multi-agent pipeline detected missing sections and prompted re-summarization in 12% of test tasks.
+
+User feedback loop supported continuous fine-tuning for personalized styles and formats.
+
+Qualitative Outcome:
+
+Users preferred modular revision cards and highlighted content over long summaries, supporting adaptability in UI output options.
+
+Evaluator flagged error cases promptly for correction, increasing trust and regular use among the test group.
