@@ -1,0 +1,7 @@
+langchain
+crewai
+openai
+chromadb
+huggingface_hub
+peft
+flask
